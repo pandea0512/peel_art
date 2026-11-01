@@ -1,0 +1,267 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>귤껍질 아틀리에 — 전시실 + 온라인 갤러리</title>
+<style>*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden;touch-action:none;font-family:system-ui,'Noto Sans KR',sans-serif;background:#fff0d9;color:#693c18}canvas{display:block;width:100%;height:100%;touch-action:none}header{position:fixed;top:0;left:0;right:0;padding:18px 18px 36px;pointer-events:none;background:linear-gradient(#fff0d9f2,#fff0d900)}h1{font-size:clamp(22px,4vw,29px);margin:0 0 7px}p{margin:0;font-size:12px;line-height:1.6;color:#9a6b47}#note{margin-top:7px;font-weight:800;color:#754922}nav{position:fixed;bottom:max(17px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:10px;padding:0 8px}button{font-weight:800;font-size:14px;border:0;border-radius:15px;padding:13px 17px;background:white;color:#754922;box-shadow:0 5px 15px #9e62262b}button:first-child{background:#ff9c27;color:#fff}nav{flex-wrap:wrap}.goArt{background:#7954aa!important;color:white!important}#artPanel{position:fixed;inset:0;pointer-events:none}#artTitle{position:absolute;top:0;left:0;right:0;background:linear-gradient(#fff0d9f5,#fff0d900);padding:18px;display:flex;flex-direction:column;gap:5px;font-size:21px}#artTitle small{font-size:12px;color:#986a48}#artCount{font-size:12px;font-weight:750}#artTools{pointer-events:auto;position:absolute;bottom:max(16px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;flex-wrap:wrap;gap:7px;padding:0 8px}#artTools button{padding:11px 13px;font-size:13px}#artTools button:disabled{opacity:.35}#artPanel #backToPeel{background:#ff9c27;color:white}#speedHint{position:fixed;top:118px;right:16px;background:#fff9edee;border-radius:13px;padding:10px 12px;box-shadow:0 5px 20px #9e622623;font-size:12px;font-weight:750;pointer-events:none;color:#88532c}#undo:disabled{opacity:.4}#artPanel{z-index:4}#artTitle{pointer-events:auto;padding-bottom:8px}#artCount{font-size:12px}#artShelf{position:absolute;left:10px;right:10px;top:110px;display:flex;gap:7px;overflow-x:auto;padding:5px 3px 10px;pointer-events:auto;scrollbar-width:thin}#artShelf button{flex:none;padding:9px 12px;font-size:12px;border:2px solid transparent}#artShelf button.active{border-color:#8355b8;background:#f1e2ff}#artTools{max-height:155px;overflow-y:auto;background:#fff0d9ec;padding:9px 7px;border-radius:17px 17px 0 0}#artTools button{padding:9px 11px;font-size:12px}#artTools button.current{background:#8053a6;color:white}#artTools .toolLabel{width:100%;text-align:center;font-size:12px;font-weight:800;color:#986a48}#artStatus{position:absolute;right:12px;top:172px;background:#fff9eddd;border-radius:12px;padding:8px 10px;font-size:12px;pointer-events:none}#error{display:none;position:absolute;left:12%;right:12%;top:40%;padding:22px;background:white;border-radius:15px;text-align:center}#artShelf{position:absolute;left:12px;right:auto;top:112px;width:min(355px,calc(100vw - 24px));display:flex;flex-direction:column;gap:7px;overflow:visible;padding:10px;background:#fff9eeeF;border-radius:16px;box-shadow:0 7px 24px #8c5a3433;pointer-events:auto}#artShelf label{font-size:12px;font-weight:800;color:#754922}#shelfControls{display:flex;gap:6px;align-items:stretch}#peelSelect{min-width:0;flex:1;border:1px solid #e5bd8b;border-radius:11px;background:white;color:#68401e;font-weight:700;font-size:13px;padding:10px}#addSelected{white-space:nowrap;background:#7954aa!important;color:white!important;padding:10px 13px;font-size:13px}#artShelf .shelfHelp{font-size:11px;color:#946e4a}#viewHelp{position:absolute;left:12px;top:215px;font-size:12px;background:#fff9eddf;border-radius:12px;padding:8px 10px;color:#885b37;pointer-events:none}#artStatus{top:215px;right:12px;max-width:46%;text-align:right}#resetView{background:#f5e7fa!important;color:#70418d!important}@media(max-width:440px){#viewHelp{top:210px;max-width:48%;font-size:11px}#artStatus{top:210px;font-size:11px}} 
+#galleryPanel{position:fixed;inset:0;pointer-events:none;z-index:6}#galleryPanel button{pointer-events:auto}#galleryPanel .galleryHead{position:absolute;top:0;left:0;right:0;padding:17px 18px 33px;background:linear-gradient(#fff0d9f8,#fff0d900);display:flex;flex-direction:column;gap:5px}.galleryHead strong{font-size:22px}.galleryHead small{font-size:12px;color:#976947}#gallerySide{pointer-events:auto;position:absolute;left:12px;top:104px;width:min(235px,46vw);max-height:55vh;overflow:auto;background:#fff9eef2;padding:11px;border-radius:18px;box-shadow:0 8px 24px #ad72352e}.gallerySideTitle{font-size:13px;font-weight:900;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}#galleryList{display:flex;flex-direction:column;gap:8px}.galleryEntry{width:100%;display:flex;align-items:center;gap:8px;padding:7px!important;text-align:left;box-shadow:none;border:2px solid #f0dbbb;background:#fff!important;color:#704421!important}.galleryEntry.chosen{border-color:#8654aa;background:#f6edff!important}.galleryThumb{width:50px;height:50px;flex:none;object-fit:cover;background:#ffedce;border-radius:9px}.galleryEntry span{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:12px}.galleryEntry small{display:block;font-size:10px;font-weight:500;color:#967253;margin-top:4px}#galleryInfo{position:absolute;right:12px;top:117px;max-width:39vw;display:flex;flex-direction:column;gap:5px;text-align:right;background:#fff9eedb;border-radius:13px;padding:10px}#galleryWorkTitle{font-size:15px}#galleryWorkInfo{font-size:11px;color:#895b39}#galleryTools{pointer-events:auto;position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:12px 8px max(18px,env(safe-area-inset-bottom));background:#fff0d9ec}#galleryTools button{font-size:12px;padding:11px}#galleryTools button:disabled{opacity:.4}#galleryToArt{background:#8053a6;color:white}#galleryToast{display:none;position:fixed;left:50%;top:58%;transform:translate(-50%,-50%);z-index:10;background:#fff9ed;padding:16px 23px;border-radius:14px;box-shadow:0 4px 22px #a67b4777;font-weight:800;font-size:13px;text-align:center;pointer-events:none}@media(max-width:440px){#gallerySide{top:105px;width:45vw;padding:7px}#galleryInfo{max-width:48vw;top:114px}.galleryThumb{width:38px;height:38px}#galleryTools button{padding:10px 11px}}
+
+#galleryAccount{pointer-events:auto;position:absolute;right:12px;top:68px;display:flex;gap:6px}#galleryAccount button{font-size:11px;padding:9px}
+#galleryMode{pointer-events:auto;position:absolute;left:12px;top:65px;display:flex;gap:6px}#galleryMode button{font-size:11px;padding:9px}
+#galleryMode button.selected{background:#7954aa;color:white}#gallerySide{top:119px;max-height:49vh}#galleryInfo{top:119px}
+#authOverlay{display:none;position:fixed;inset:0;z-index:25;background:#3a281bbd;align-items:center;justify-content:center;padding:20px;touch-action:auto}
+#authCard{background:#fff8ed;color:#654020;width:min(420px,100%);max-height:90vh;overflow:auto;padding:22px;border-radius:22px;box-shadow:0 10px 45px #24150055}
+#authCard h2{margin:0 0 10px;font-size:21px}#authCard label{display:block;font-weight:700;font-size:12px;margin-top:12px}
+#authCard input{width:100%;font-size:15px;padding:12px;border-radius:11px;border:1px solid #dabd9c;background:white;margin-top:5px}
+#authCard .authRow{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}#authCard button{font-size:12px;padding:11px}
+#authMessage{font-size:12px;white-space:pre-wrap;line-height:1.5;margin-top:12px;color:#96512f}
+@media(max-width:500px){#galleryAccount{top:89px;right:9px}#galleryMode{top:89px;left:9px}#gallerySide{top:142px;max-height:43vh}#galleryInfo{top:142px}}
+</style></head><body>
+<canvas id="stage"></canvas><header><h1>🍊 귤껍질 아틀리에</h1><p>천천히 벗기면 얇게, 빠르게 벗기면 넓게 까져요.<br>귤 바깥을 드래그하면 회전해요.</p><p id="note">벗긴 길이 0.0 cm · 껍질 0개</p></header><div id="speedHint">손가락 속도 → 껍질 폭</div><nav><button id="again">🍊 새 귤</button><button id="undo" disabled>↶ 되돌리기</button><button id="photo">📸 작품 저장</button><button id="toArt" class="goArt">🎨 작품 조립하기 <span id="stored">(0)</span></button><button id="toGallery">🏛️ 전시실</button></nav>
+<div id="artPanel" style="display:none">
+ <div id="artTitle"><strong>🎨 귤껍질 조립실</strong><small>목록에서 껍질을 고르고 추가해요. 빈 공간을 드래그하면 시점이 회전해요.</small><span id="artCount"></span></div>
+ <div id="artShelf" aria-label="껍질 보관함"><label for="peelSelect">📦 껍질 보관함</label><div id="shelfControls"><select id="peelSelect"></select><button id="addSelected">＋ 추가</button></div><span class="shelfHelp" id="shelfHelp">귤에서 벗긴 껍질을 골라 추가하세요.</span></div><div id="viewHelp">🔄 빈 곳 드래그: 시점 회전<br>🤏 두 손가락: 확대 · 축소</div><div id="artStatus">껍질을 선택해 주세요</div>
+ <div id="artTools"><div class="toolLabel">선택한 껍질 편집 · 드래그로 이동</div>
+ <button id="backToPeel">🍊 귤 까기</button><button id="resetView">🎥 시점 초기화</button><button id="rotLeft">↶ 회전</button><button id="rotRight">↷ 회전</button><button id="sizeDown">－ 작게</button><button id="sizeUp">＋ 크게</button>
+ <button id="flipX">↕ 기울이기</button><button id="flipY">⤾ 방향 전환</button><button id="raise">↑ 앞으로</button><button id="lower">↓ 뒤로</button>
+ <button id="copyPiece">⧉ 복제</button><button id="removePiece">🗑 제거</button><button id="clearArt">🧹 조립 초기화</button><button id="saveLayout">💾 조립 저장</button><label for="exhibitTitle" style="font-size:12px;font-weight:800">작품 제목 <input id="exhibitTitle" type="text" maxlength="40" placeholder="귤껍질 작품" style="width:135px;max-width:32vw;border:1px solid #eccda8;border-radius:9px;padding:9px;background:white"></label><button id="exhibitArt">🏛️ 전시하고 바로 보기</button><button id="photoArt">📸 작품 저장</button>
+ </div></div>
+<div id="galleryPanel" style="display:none">
+ <div class="galleryHead"><strong>🏛️ 귤껍질 작품 전시실</strong><small>전시된 작품을 선택하고, 빈 곳을 드래그해 360° 감상하세요.</small></div>
+ <div id="galleryMode"><button id="myGalleryTab" class="selected">🖼️ 내 전시</button><button id="publicGalleryTab">🌏 모두의 전시</button></div><div id="galleryAccount"><button id="loginButton">👤 로그인</button></div>
+ <div id="gallerySide"><div class="gallerySideTitle">🖼️ <span id="galleryListCaption">나의 작품들</span> <span id="galleryCount">0</span></div><div id="galleryList"></div></div>
+ <div id="galleryInfo"><strong id="galleryWorkTitle">전시 작품을 선택하세요</strong><span id="galleryWorkInfo">아직 선택한 작품이 없어요.</span></div>
+ <div id="galleryTools"><button id="galleryToPeel">🍊 귤 까기</button><button id="galleryToArt">🎨 조립실</button><button id="galleryResetCamera">🎥 시점 초기화</button><button id="galleryEdit">✏️ 다시 편집</button><button id="galleryCapture">📸 사진 저장</button><button id="galleryPublish">🌏 공개하기</button><button id="galleryDelete">🗑 전시 철거</button></div>
+</div><div id="galleryToast" role="status"></div><div id="error"></div>
+<div id="authOverlay"><div id="authCard"><h2>🍊 귤껍질 아틀리에 계정</h2><p>로그인하면 내 작품을 온라인 전시실에 공개할 수 있어요. 내 전시는 로그인 없이도 사용할 수 있습니다.</p>
+<label>이메일<input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"></label>
+<label>비밀번호<input id="authPassword" type="password" placeholder="6자 이상" autocomplete="current-password"></label>
+<div class="authRow"><button id="authSignup">회원가입</button><button id="authLogin">로그인</button><button id="authLogout">로그아웃</button><button id="authClose">닫기</button></div><div id="authMessage"></div></div></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
+const c=document.querySelector('#stage'),renderer=new THREE.WebGLRenderer({canvas:c,antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xfff0d9);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;
+const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(39,innerWidth/innerHeight,.1,60);cam.position.set(0,2,8.5);cam.lookAt(0,.3,0);scene.add(new THREE.HemisphereLight(0xffffff,0xd9a06c,2.3));const key=new THREE.DirectionalLight(0xffffff,2.8);key.position.set(-3,7,6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-5;key.shadow.camera.right=5;key.shadow.camera.top=5;key.shadow.camera.bottom=-5;scene.add(key);
+const ground=new THREE.Mesh(new THREE.CylinderGeometry(2.62,2.62,.18,80),new THREE.MeshStandardMaterial({color:0xffdf9a,roughness:.95}));ground.position.y=-1.62;ground.receiveShadow=true;scene.add(ground);
+const fruit=new THREE.Group();fruit.position.y=.3;scene.add(fruit);
+const RX=1.52,RY=1.13,RZ=1.48, geo=new THREE.SphereGeometry(1,144,96);geo.scale(RX,RY,RZ);
+const under=new THREE.Mesh(new THREE.SphereGeometry(1,144,96),new THREE.MeshStandardMaterial({color:0xffe6b2,roughness:1}));under.scale.set(RX*.987,RY*.987,RZ*.987);fruit.add(under);
+const mc=document.createElement('canvas');mc.width=2048;mc.height=1024;const mctx=mc.getContext('2d',{willReadFrequently:true});let tex;
+const rindMaterial=new THREE.MeshStandardMaterial({color:0xffb31e,roughness:.9,alphaTest:.5,side:THREE.DoubleSide});const rind=new THREE.Mesh(geo,rindMaterial);rind.castShadow=true;fruit.add(rind);
+function resetMask(){mctx.fillStyle='#fff';mctx.fillRect(0,0,mc.width,mc.height);tex?.dispose();tex=new THREE.CanvasTexture(mc);tex.wrapS=THREE.RepeatWrapping;tex.colorSpace=THREE.NoColorSpace;rindMaterial.alphaMap=tex;rindMaterial.needsUpdate=true}
+resetMask();
+const green=new THREE.MeshStandardMaterial({color:0x53852a,roughness:.9}),top=new THREE.Group();top.position.y=RY+.01;const stem=new THREE.Mesh(new THREE.CylinderGeometry(.05,.084,.13,16),green);stem.position.y=.06;const ring=new THREE.Mesh(new THREE.TorusGeometry(.15,.032,8,32),green);ring.rotation.x=Math.PI/2;top.add(stem,ring);fruit.add(top);
+const peelOutside=new THREE.MeshStandardMaterial({color:0xf79e25,roughness:.86,side:THREE.FrontSide});const peelInside=new THREE.MeshStandardMaterial({color:0xffe8b9,roughness:1,side:THREE.BackSide});
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();function rayHit(x,y){mouse.set(x/innerWidth*2-1,1-y/innerHeight*2);ray.setFromCamera(mouse,cam);const hits=ray.intersectObject(rind,false);if(!hits.length)return null;const h=hits[0];return {p:fruit.worldToLocal(h.point.clone()),uv:h.uv.clone()}}
+function isPeeled(uv){const x=Math.max(0,Math.min(mc.width-1,Math.floor(uv.x*mc.width))),y=Math.max(0,Math.min(mc.height-1,Math.floor((1-uv.y)*mc.height)));return mctx.getImageData(x,y,1,1).data[0]<100}
+function stamp(uv,width=.13){const x=uv.x*mc.width,y=(1-uv.y)*mc.height;mctx.fillStyle='#000';const radius=Math.max(7,width*mc.width*.078);for(const dx of [-mc.width,0,mc.width]){mctx.beginPath();mctx.ellipse(x+dx,y,radius,radius*.98,0,0,Math.PI*2);mctx.fill()}tex.needsUpdate=true}
+function downLocal(){return fruit.worldToLocal(new THREE.Vector3(0,-1,0)).sub(fruit.worldToLocal(new THREE.Vector3())).normalize()}
+function normalAt(p){return new THREE.Vector3(p.x/RX**2,p.y/RY**2,p.z/RZ**2).normalize()}
+const strips=[],archive=[];let current=null,mode=null,lastX=0,lastY=0,peelLength=0;let page="peel",selectedPiece=null,pieces=[],moveOffset=new THREE.Vector3();const artObjects=new THREE.Group();scene.add(artObjects);const artBoard=new THREE.Mesh(new THREE.CylinderGeometry(2.95,2.95,.13,96),new THREE.MeshStandardMaterial({color:0xf6d2a3,roughness:.95}));artBoard.position.y=-1.6;artBoard.receiveShadow=true;artBoard.visible=false;scene.add(artBoard);
+const undoButton=document.querySelector('#undo'),speedHint=document.querySelector('#speedHint');
+const MIN_WIDTH=.065, MAX_WIDTH=.62;
+let previousMoveTime=0, filteredSpeed=.22, currentWidth=.105;
+function speedWidth(speed){const t=Math.min(1,Math.max(0,(speed-.06)/1.25));return MIN_WIDTH+(MAX_WIDTH-MIN_WIDTH)*Math.pow(t,.7)}
+function setSpeedHint(width){const mm=Math.round(width*100);speedHint.textContent=`${width<.105?'🐌 얇게':width>.34?'⚡ 넓게':'🍊 보통'} · ${mm} mm`}
+
+function refreshStats(){document.querySelector('#note').textContent=`벗긴 길이 ${peelLength.toFixed(1)} cm · 껍질 ${strips.length}개`;undoButton.disabled=strips.length===0;document.querySelector("#stored").textContent=`(${strips.length+archive.length})`;}
+function makeStrip(hit){if(isPeeled(hit.uv))return false;current={samples:[],front:null,back:null};currentWidth=.105;filteredSpeed=.22;strips.push(current);sample(hit,currentWidth);refreshStats();return true}
+function sample(h,width=currentWidth){if(!current)return;const arr=current.samples,last=arr[arr.length-1];if(last){let length=last.p.distanceTo(h.p);if(length<.032||length>.65)return;let uDiff=h.uv.x-last.uv.x;if(uDiff>.5)uDiff-=1;if(uDiff<-.5)uDiff+=1;const count=Math.ceil(length/.065);for(let i=1;i<=count;i++){const t=i/count,u=(last.uv.x+uDiff*t+1)%1,v=last.uv.y+(h.uv.y-last.uv.y)*t;const p=last.p.clone().lerp(h.p,t);const ell=Math.hypot(p.x/RX,p.y/RY,p.z/RZ);p.multiplyScalar(1/ell);insert(p,new THREE.Vector2(u,v),width)}}else insert(h.p,h.uv,width)}
+function insert(p,uv,width){const arr=current.samples;const prev=arr[arr.length-1];if(prev)peelLength+=prev.p.distanceTo(p)*3.4;arr.push({p:p.clone(),uv:uv.clone(),width});stamp(uv,width);refreshStats();renderPeel(current)}
+function renderPeel(strip){
+ const arr=strip.samples,n=arr.length;if(n<2)return;
+ // The touched surface coordinates remain authoritative. The tip is the only attached end.
+ const tip=arr[n-1].p, normal=normalAt(tip), down=downLocal();
+ const cumulative=new Float32Array(n);
+ for(let i=n-2;i>=0;i--)cumulative[i]=cumulative[i+1]+arr[i].p.distanceTo(arr[i+1].p);
+ const verts=new Float32Array(n*6),uvs=new Float32Array(n*4),indices=[];
+ let side=new THREE.Vector3().crossVectors(down,normal).normalize();if(side.lengthSq()<.01)side.set(1,0,0);
+ for(let i=0;i<n;i++){
+  const length=cumulative[i];
+  const outward=.012+Math.min(.34,length)*.92;
+  const drop=Math.max(0,length-.12)*.85;
+  const curl=Math.sin(length*5.6)*.075*Math.min(1,length*2);
+  const pos=tip.clone().addScaledVector(normal,outward).addScaledVector(down,drop).addScaledVector(side,curl);
+  const world=fruit.localToWorld(pos.clone());if(world.y<-1.47){world.y=-1.47;pos.copy(fruit.worldToLocal(world));}
+  let half=arr[i].width*.5*(.96+.04*Math.sin(i*.31));
+  verts.set([pos.x-side.x*half,pos.y-side.y*half,pos.z-side.z*half,pos.x+side.x*half,pos.y+side.y*half,pos.z+side.z*half],i*6);
+  uvs.set([0,length,1,length],i*4);
+  if(i<n-1){const j=i*2;indices.push(j,j+1,j+2,j+1,j+3,j+2)}
+ }
+ const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(verts,3));geometry.setAttribute('uv',new THREE.BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeVertexNormals();
+ if(strip.front){strip.front.geometry.dispose();strip.back.geometry.dispose();strip.front.geometry=geometry;strip.back.geometry=geometry.clone()}
+ else{strip.front=new THREE.Mesh(geometry,peelOutside);strip.back=new THREE.Mesh(geometry.clone(),peelInside);strip.front.castShadow=true;fruit.add(strip.front,strip.back)}
+}
+function rebuildMask(){mctx.fillStyle='#fff';mctx.fillRect(0,0,mc.width,mc.height);for(const strip of strips){for(const sample of strip.samples)stamp(sample.uv,sample.width)}tex.needsUpdate=true;}
+function discardStrip(strip){if(strip.front){fruit.remove(strip.front,strip.back);strip.front.geometry.dispose();strip.back.geometry.dispose()} }
+undoButton.onclick=()=>{if(!strips.length)return;const last=strips.pop();discardStrip(last);peelLength=0;for(const strip of strips){for(let i=1;i<strip.samples.length;i++)peelLength+=strip.samples[i-1].p.distanceTo(strip.samples[i].p)*3.4}current=null;mode=null;rebuildMask();refreshStats()};
+
+function stop(){mode=null;current=null}
+c.addEventListener('pointerdown',e=>{c.setPointerCapture(e.pointerId);if(page==='art'||page==='gallery'){artPointerDown(e);return;}lastX=e.clientX;lastY=e.clientY;const h=rayHit(e.clientX,e.clientY);previousMoveTime=e.timeStamp;setSpeedHint(.105);mode=h&&makeStrip(h)?'peel':'rotate';e.preventDefault()});
+c.addEventListener('pointermove',e=>{if(page==='art'||page==='gallery'){artPointerMove(e);return;}if(mode==='peel'){const elapsed=Math.max(8,e.timeStamp-previousMoveTime);const distance=Math.hypot(e.clientX-lastX,e.clientY-lastY);const speed=distance/elapsed;filteredSpeed=filteredSpeed*.55+Math.min(2.5,speed)*.45;const desired=speedWidth(filteredSpeed);currentWidth=currentWidth*.5+desired*.5;setSpeedHint(currentWidth);const h=rayHit(e.clientX,e.clientY);if(h)sample(h,currentWidth)}else if(mode==='rotate'){fruit.rotation.y+=(e.clientX-lastX)*.007;fruit.rotation.x=Math.min(.8,Math.max(-.8,fruit.rotation.x+(e.clientY-lastY)*.004))}lastX=e.clientX;lastY=e.clientY;previousMoveTime=e.timeStamp;e.preventDefault()});
+c.addEventListener('pointerup',stop);c.addEventListener('pointercancel',stop);
+document.querySelector('#again').onclick=()=>{for(const s of strips){if(s.front)archive.push({savedGeometry:s.front.geometry.clone()});}for(const s of strips)discardStrip(s);strips.length=0;current=null;peelLength=0;fruit.rotation.set(0,0,0);resetMask();setSpeedHint(.105);refreshStats()};
+document.querySelector('#photo').onclick=()=>{renderer.render(scene,cam);const link=document.createElement('a');link.download='귤껍질_작품.png';link.href=c.toDataURL('image/png');link.click()};
+
+// Workshop: original geometry remains untouched; copies exist only in the editor.
+const selectable=[];
+const shelf=document.querySelector('#artShelf'), status=document.querySelector('#artStatus'), peelSelect=document.querySelector('#peelSelect');
+const storageKey='orange-peel-atelier-workshop-v3';
+const galleryStorageKey='orange-peel-atelier-gallery-v1';
+let nextPieceId=1, selectedId=null, draggingPiece=null;
+let orbitYaw=0,orbitPitch=.22,orbitRadius=9.7,orbitMode=false,orbitStartX=0,orbitStartY=0;
+const artTarget=new THREE.Vector3(0,.15,0);const artTouches=new Map();let pinchPrev=0;
+function updateArtCamera(){orbitPitch=THREE.MathUtils.clamp(orbitPitch,-1.25,1.25);orbitRadius=THREE.MathUtils.clamp(orbitRadius,4.1,18);cam.position.set(artTarget.x+orbitRadius*Math.sin(orbitYaw)*Math.cos(orbitPitch),artTarget.y+orbitRadius*Math.sin(orbitPitch),artTarget.z+orbitRadius*Math.cos(orbitYaw)*Math.cos(orbitPitch));cam.lookAt(artTarget)}
+function resetArtCamera(){orbitYaw=0;orbitPitch=.26;orbitRadius=9.7;updateArtCamera()}
+document.querySelector('#resetView').onclick=resetArtCamera;
+
+const editableButtons=['rotLeft','rotRight','sizeDown','sizeUp','flipX','flipY','raise','lower','copyPiece','removePiece'];
+function sources(){return [...archive,...strips].filter(s=>s.savedGeometry||s.front)}
+function dropArtObjects(){for(const obj of [...artObjects.children]){artObjects.remove(obj);obj.traverse(o=>{if(o.isMesh){o.geometry.dispose();o.material.dispose()}})}selectable.length=0;pieces.length=0;selectedPiece=null;selectedId=null}
+function createArtPiece(sourceIndex, transforms){
+ const source=sources()[sourceIndex];if(!source)return null;
+ const geometry=(source.savedGeometry||source.front.geometry).clone();geometry.computeBoundingBox();
+ const center=geometry.boundingBox.getCenter(new THREE.Vector3());geometry.translate(-center.x,-center.y,-center.z);
+ const item=new THREE.Group();
+ const outside=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xf49b22,roughness:.87,side:THREE.DoubleSide}));outside.castShadow=true;
+ const inside=new THREE.Mesh(geometry.clone(),new THREE.MeshStandardMaterial({color:0xffe5b4,roughness:1,side:THREE.BackSide}));
+ outside.userData.piece=item;inside.userData.piece=item;item.add(outside,inside);
+ const n=pieces.length;item.position.set(((n%5)-2)*.86,.4+Math.floor(n/5)*.45,-.03*n);
+ item.rotation.y=.2*n;item.userData={sourceIndex,id:nextPieceId++};
+ if(transforms){item.position.fromArray(transforms.position);item.rotation.set(...transforms.rotation);item.scale.fromArray(transforms.scale);item.userData.id=transforms.id??nextPieceId++;nextPieceId=Math.max(nextPieceId,item.userData.id+1)}
+ artObjects.add(item);pieces.push(item);selectable.push(outside,inside);selectPiece(item);return item;
+}
+function selectPiece(item){selectedPiece=item||null;selectedId=item?.userData.id??null;for(const p of pieces){p.traverse(o=>{if(o.isMesh&&o.material)o.material.emissive?.setHex(p===item?0x342009:0x000000)})}refreshArtUI()}
+function refreshArtUI(){const src=sources();document.querySelector('#artCount').textContent=`보관함 ${src.length}개 · 조립판 ${pieces.length}개`;
+ status.textContent=selectedPiece?`선택: 껍질 ${selectedPiece.userData.sourceIndex+1} · 확대 ${Math.round(selectedPiece.scale.x*100)}%`:'보관함의 + 추가를 눌러주세요';
+ for(const id of editableButtons)document.getElementById(id).disabled=!selectedPiece;
+ const oldIndex=peelSelect.value;
+ peelSelect.replaceChildren();
+ if(!src.length){const opt=document.createElement('option');opt.value='';opt.textContent='보관된 껍질이 없어요';peelSelect.add(opt)}
+ src.forEach((source,i)=>{const opt=document.createElement('option');opt.value=String(i);const g=source.savedGeometry||source.front?.geometry;const length=source.samples?.length;opt.textContent=`🍊 껍질 ${i+1}${length?' · '+length+'구간':''}`;peelSelect.add(opt)});
+ if(src.length&&Array.from(peelSelect.options).some(o=>o.value===oldIndex))peelSelect.value=oldIndex;
+ document.querySelector('#addSelected').disabled=!src.length;
+ document.querySelector('#shelfHelp').textContent=src.length?'목록에서 고른 뒤 ＋ 추가를 눌러주세요.':'귤 까기 화면에서 껍질을 먼저 모아주세요.';
+}
+document.querySelector('#addSelected').onclick=()=>{const i=Number(peelSelect.value);if(!sources()[i])return;createArtPiece(i);saveLayout()};
+function snapshot(){return {version:3,pieces:pieces.map(p=>({sourceIndex:p.userData.sourceIndex,id:p.userData.id,position:p.position.toArray(),rotation:[p.rotation.x,p.rotation.y,p.rotation.z],scale:p.scale.toArray()}))}}
+function saveLayout(){try{localStorage.setItem(storageKey,JSON.stringify(snapshot()))}catch(e){}refreshArtUI()}
+function loadLayout(){dropArtObjects();let data;try{data=JSON.parse(localStorage.getItem(storageKey)||'null')}catch(e){}if(data?.version===3&&Array.isArray(data.pieces)){for(const item of data.pieces)createArtPiece(item.sourceIndex,item)}refreshArtUI()}
+let skipLoadOnce=false;function switchPage(next){page=next;stop();artTouches.clear();orbitMode=false;draggingPiece=null;pinchPrev=0;const art=page==='art', gallery=page==='gallery';fruit.visible=page==='peel';ground.visible=page==='peel';artBoard.visible=art;artObjects.visible=art;galleryGroup.visible=gallery;
+ document.querySelector('header').style.display=page==='peel'?'':'none';document.querySelector('nav').style.display=page==='peel'?'':'none';
+ document.querySelector('#speedHint').style.display=page==='peel'?'':'none';document.querySelector('#artPanel').style.display=art?'block':'none';document.querySelector('#galleryPanel').style.display=gallery?'block':'none';
+ if(art){if(skipLoadOnce)skipLoadOnce=false;else loadLayout();resetArtCamera()}else if(gallery){refreshGallery();resetArtCamera()}else{cam.position.set(0,2,8.5);cam.lookAt(0,.3,0)}cam.updateProjectionMatrix();
+}
+document.querySelector('#toArt').onclick=()=>switchPage('art');
+document.querySelector('#backToPeel').onclick=()=>{saveLayout();switchPage('peel')};
+function artRay(e){mouse.set(e.clientX/innerWidth*2-1,1-e.clientY/innerHeight*2);ray.setFromCamera(mouse,cam)}
+let dragPlane=new THREE.Plane(new THREE.Vector3(0,0,1),0),dragIntersection=new THREE.Vector3();
+function artPointerDown(e){artTouches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(artTouches.size>=2){draggingPiece=null;orbitMode=true;pinchPrev=0;e.preventDefault();return}
+ artRay(e);const hits=page==='art'?ray.intersectObjects(selectable,false):[];draggingPiece=hits.length?hits[0].object.userData.piece:null;
+ orbitMode=!draggingPiece;orbitStartX=e.clientX;orbitStartY=e.clientY;
+ if(draggingPiece){selectPiece(draggingPiece);dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,0,1),draggingPiece.position);
+ ray.ray.intersectPlane(dragPlane,dragIntersection);moveOffset.copy(draggingPiece.position).sub(dragIntersection)}
+ else if(page==='art')selectPiece(null);e.preventDefault()}
+function artPointerMove(e){if(artTouches.has(e.pointerId))artTouches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(artTouches.size>=2){const pts=[...artTouches.values()];const d=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);if(pinchPrev>0)orbitRadius*=pinchPrev/Math.max(1,d);pinchPrev=d;updateArtCamera();e.preventDefault();return}
+ pinchPrev=0;
+ if(orbitMode){orbitYaw-=(e.clientX-orbitStartX)*.008;orbitPitch+=(e.clientY-orbitStartY)*.006;orbitStartX=e.clientX;orbitStartY=e.clientY;updateArtCamera();e.preventDefault();return}
+ if(!draggingPiece)return;artRay(e);if(ray.ray.intersectPlane(dragPlane,dragIntersection)){
+ draggingPiece.position.copy(dragIntersection).add(moveOffset);draggingPiece.position.x=THREE.MathUtils.clamp(draggingPiece.position.x,-3,3);draggingPiece.position.y=THREE.MathUtils.clamp(draggingPiece.position.y,-1.1,2.7);
+ }e.preventDefault()}
+function artPointerEnd(e){artTouches.delete(e.pointerId);pinchPrev=0;if(draggingPiece){draggingPiece=null;if(page==='art')saveLayout()}orbitMode=false;}
+c.addEventListener('pointerup',e=>{if(page==='art'||page==='gallery')artPointerEnd(e)});
+c.addEventListener('pointercancel',e=>{if(page==='art'||page==='gallery')artPointerEnd(e)});
+c.addEventListener('wheel',e=>{if(page!=='art'&&page!=='gallery')return;e.preventDefault();orbitRadius*=Math.exp(e.deltaY*.001);updateArtCamera()},{passive:false});
+function edit(fn){if(!selectedPiece)return;fn(selectedPiece);saveLayout()}
+document.querySelector('#rotLeft').onclick=()=>edit(p=>p.rotation.z+=Math.PI/12);
+document.querySelector('#rotRight').onclick=()=>edit(p=>p.rotation.z-=Math.PI/12);
+document.querySelector('#flipX').onclick=()=>edit(p=>p.rotation.x+=Math.PI/12);
+document.querySelector('#flipY').onclick=()=>edit(p=>p.rotation.y+=Math.PI/12);
+document.querySelector('#sizeDown').onclick=()=>edit(p=>p.scale.multiplyScalar(.86).clampScalar(.3,3));
+document.querySelector('#sizeUp').onclick=()=>edit(p=>p.scale.multiplyScalar(1.16).clampScalar(.3,3));
+document.querySelector('#raise').onclick=()=>edit(p=>p.position.z=Math.min(2,p.position.z+.14));
+document.querySelector('#lower').onclick=()=>edit(p=>p.position.z=Math.max(-2,p.position.z-.14));
+document.querySelector('#copyPiece').onclick=()=>{if(!selectedPiece)return;let p=selectedPiece;createArtPiece(p.userData.sourceIndex,{id:nextPieceId++,position:[p.position.x+.2,p.position.y+.2,p.position.z+.05],rotation:[p.rotation.x,p.rotation.y,p.rotation.z],scale:p.scale.toArray()});saveLayout()};
+document.querySelector('#removePiece').onclick=()=>{if(!selectedPiece)return;const p=selectedPiece;artObjects.remove(p);pieces.splice(pieces.indexOf(p),1);for(const mesh of p.children){const at=selectable.indexOf(mesh);if(at>=0)selectable.splice(at,1);mesh.geometry.dispose();mesh.material.dispose()}selectPiece(null);saveLayout()};
+document.querySelector('#clearArt').onclick=()=>{dropArtObjects();saveLayout()};
+document.querySelector('#saveLayout').onclick=()=>{saveLayout();status.textContent='💾 배치 저장 완료 (이 브라우저)'};
+document.querySelector('#photoArt').onclick=()=>{renderer.render(scene,cam);const a=document.createElement('a');a.download='귤껍질_조립_작품.png';a.href=c.toDataURL('image/png');a.click()};
+
+// Exhibition: gallery entries are fully self-contained, with their own serialized peel geometries.
+const galleryGroup=new THREE.Group();galleryGroup.visible=false;scene.add(galleryGroup);
+const galleryBase=new THREE.Mesh(new THREE.CylinderGeometry(2.9,2.9,.22,96),new THREE.MeshStandardMaterial({color:0xe6c49a,roughness:.78,metalness:.07}));galleryBase.position.y=-1.72;galleryBase.visible=false;galleryBase.receiveShadow=true;scene.add(galleryBase);
+const galleryRecords=[];let viewingId=null, galleryScope='mine', publicRecords=[];
+const DBNAME='orange-peel-gallery-v2';
+let dbPromise=null;
+function openGalleryDB(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{if(!window.indexedDB){reject(new Error('이 브라우저는 IndexedDB를 사용할 수 없어요.'));return}const request=indexedDB.open(DBNAME,1);request.onupgradeneeded=()=>{request.result.createObjectStore('works',{keyPath:'id'})};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});return dbPromise}
+async function dbSave(record){const db=await openGalleryDB();return new Promise((resolve,reject)=>{const tx=db.transaction('works','readwrite');tx.objectStore('works').put(record);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+async function dbDelete(id){const db=await openGalleryDB();return new Promise((resolve,reject)=>{const tx=db.transaction('works','readwrite');tx.objectStore('works').delete(id);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error)})}
+async function dbGetAll(){const db=await openGalleryDB();return new Promise((resolve,reject)=>{const tx=db.transaction('works','readonly');const req=tx.objectStore('works').getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error)})}
+async function loadGalleryData(){try{const all=await dbGetAll();galleryRecords.splice(0,galleryRecords.length,...all,...galleryRecords.filter(r=>!all.some(a=>a.id===r.id)));if(!all.length){try{const old=JSON.parse(localStorage.getItem(galleryStorageKey)||'[]');if(Array.isArray(old)&&old.length){for(const item of old){await dbSave(item)}galleryRecords.push(...old)}}catch(err){console.warn('previous works migration',err)}}}catch(e){console.warn('gallery storage',e);const old=JSON.parse(localStorage.getItem(galleryStorageKey)||'[]');if(Array.isArray(old))galleryRecords.splice(0,galleryRecords.length,...old)}refreshGallery()}
+async function persistGallery(record){await dbSave(record)}
+function serializeGeometry(geo){const pos=geo.getAttribute('position');const index=geo.getIndex();return {positions:Array.from(pos.array),indices:index?Array.from(index.array):null}}
+function geometryFromSaved(saved){if(!saved?.positions||!Array.isArray(saved.positions)||saved.positions.length>450000)return null;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(saved.positions,3));if(saved.indices)g.setIndex(saved.indices);g.computeVertexNormals();return g}
+function takeExhibitSnapshot(title){const parts=[];for(const p of pieces){const mesh=p.children.find(o=>o.isMesh&&o.geometry);if(!mesh)continue;parts.push({geometry:serializeGeometry(mesh.geometry),position:p.position.toArray(),rotation:[p.rotation.x,p.rotation.y,p.rotation.z],scale:p.scale.toArray()})}return {id:'art-'+Date.now()+'-'+Math.floor(Math.random()*100000),title,created:new Date().toISOString(),parts,thumbnail:''}}
+function clearGalleryMeshes(){for(const group of [...galleryGroup.children]){galleryGroup.remove(group);group.traverse(o=>{if(o.isMesh){o.geometry.dispose();o.material.dispose()}})}}
+function showGalleryWork(id){viewingId=id;const item=(galleryScope==='mine'?galleryRecords:publicRecords).find(r=>r.id===id);clearGalleryMeshes();galleryBase.visible=!!item;
+ if(item){for(const part of item.parts){const geo=geometryFromSaved(part.geometry);if(!geo)continue;geo.computeBoundingBox();const center=geo.boundingBox.getCenter(new THREE.Vector3());geo.translate(-center.x,-center.y,-center.z);const group=new THREE.Group();group.position.fromArray(part.position);group.rotation.set(...part.rotation);group.scale.fromArray(part.scale);const a=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xf49b22,roughness:.87,side:THREE.DoubleSide}));a.castShadow=true;const b=new THREE.Mesh(geo.clone(),new THREE.MeshStandardMaterial({color:0xffe5b4,roughness:1,side:THREE.BackSide}));group.add(a,b);galleryGroup.add(group)}}
+ document.querySelector('#galleryWorkTitle').textContent=item?.title||'전시 작품을 선택하세요';document.querySelector('#galleryWorkInfo').textContent=item?`${item.parts.length}개 껍질 · ${new Date(item.created).toLocaleDateString('ko-KR')}`:'조립실에서 작품을 전시해 보세요.';
+ for(const id of ['galleryEdit','galleryDelete','galleryPublish'])document.getElementById(id).disabled=!item||galleryScope!=='mine';document.getElementById('galleryCapture').disabled=!item;
+ document.querySelectorAll('.galleryEntry').forEach(b=>b.classList.toggle('chosen',b.dataset.work===id));
+}
+function refreshGallery(){const list=document.getElementById('galleryList');list.replaceChildren();const shown=galleryScope==='mine'?galleryRecords:publicRecords;document.getElementById('galleryListCaption').textContent=galleryScope==='mine'?'나의 작품들':'모두의 작품들';document.getElementById('galleryCount').textContent=`${shown.length}개`;if(!shown.length){const empty=document.createElement('p');empty.textContent=galleryScope==='mine'?'전시된 작품이 없어요. 조립실에서 첫 작품을 만들어 보세요!':'공개된 작품이 없거나 온라인 연결이 필요해요.';list.append(empty)}
+ for(const record of [...shown].reverse()){const b=document.createElement('button');b.className='galleryEntry';b.dataset.work=record.id;const img=document.createElement('img');img.className='galleryThumb';img.alt='';if(record.thumbnail)img.src=record.thumbnail;const label=document.createElement('span');label.textContent=record.title;const small=document.createElement('small');small.textContent=`${record.parts.length}개 껍질 · ${new Date(record.created).toLocaleDateString('ko-KR')}`;label.append(small);b.append(img,label);b.onclick=()=>{showGalleryWork(record.id);resetArtCamera()};list.append(b)}
+ const id=shown.some(r=>r.id===viewingId)?viewingId:shown.at(-1)?.id||null;showGalleryWork(id)}
+function enterGallery(){saveLayout();switchPage('gallery')}
+function showFreshlyExhibited(record){
+  // The preview comes from the current in-memory artwork, without waiting for storage or a second selection.
+  galleryScope='mine'; viewingId=record.id;
+  document.getElementById('myGalleryTab').classList.add('selected');
+  document.getElementById('publicGalleryTab').classList.remove('selected');
+  enterGallery();
+  showGalleryWork(record.id);
+  resetArtCamera();
+}
+
+document.getElementById('toGallery').onclick=enterGallery;
+document.getElementById('galleryToPeel').onclick=()=>{clearGalleryMeshes();galleryBase.visible=false;switchPage('peel')};
+document.getElementById('galleryToArt').onclick=()=>{clearGalleryMeshes();galleryBase.visible=false;switchPage('art')};
+document.getElementById('galleryResetCamera').onclick=resetArtCamera;
+document.getElementById('exhibitArt').onclick=async()=>{
+ if(!pieces.length){alert('전시하려면 먼저 보관함에서 껍질을 골라 ＋ 추가를 눌러 조립판에 올려주세요!');return}
+ const title=(document.getElementById('exhibitTitle').value.trim().slice(0,40)||`귤껍질 작품 ${galleryRecords.length+1}`);
+ const button=document.getElementById('exhibitArt');button.disabled=true;
+ try{
+   const record=takeExhibitSnapshot(title);
+   if(!record.parts.length){throw new Error('껍질의 3D 메시가 없어 전시할 수 없어요. 껍질을 한 번 다시 추가해 주세요.')}
+   // Gallery switching is independent of cloud auth and local storage availability.
+   galleryRecords.push(record);
+   showFreshlyExhibited(record);
+   button.disabled=false;
+   try{await persistGallery(record)}catch(storageErr){console.warn('전시는 성공했으나 영구 저장 실패:',storageErr);alert('전시는 되었지만 이 브라우저에서 저장이 제한되어 새로고침 후 사라질 수 있어요.')}
+ }catch(err){button.disabled=false;console.error('전시 실패:',err);alert('전시 처리 오류: '+(err.message||err))}
+};
+document.getElementById('galleryCapture').onclick=()=>{if(!viewingId)return;renderer.render(scene,cam);const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download=(galleryRecords.find(r=>r.id===viewingId)?.title||'귤껍질_전시')+'.png';a.click()};
+document.getElementById('galleryDelete').onclick=async()=>{if(galleryScope!=='mine')return;const record=galleryRecords.find(r=>r.id===viewingId);if(!record||!confirm(`「${record.title}」 작품을 전시실에서 삭제할까요?`))return;try{await dbDelete(record.id);galleryRecords.splice(galleryRecords.indexOf(record),1);viewingId=null;refreshGallery()}catch(err){alert('삭제 실패: '+err.message)}};
+document.getElementById('galleryEdit').onclick=()=>{const record=galleryRecords.find(r=>r.id===viewingId);if(!record)return;
+ // Import gallery geometry into the workshop archive; copies remain independent of the exhibit.
+ const indices=[];for(const part of record.parts){const geo=geometryFromSaved(part.geometry);if(!geo)continue;const index=archive.length;archive.push({savedGeometry:geo});indices.push({index,part})}
+ dropArtObjects();for(const {index,part} of indices)createArtPiece(index,{position:part.position,rotation:part.rotation,scale:part.scale});saveLayout();clearGalleryMeshes();galleryBase.visible=false;skipLoadOnce=true;switchPage('art');};
+loadGalleryData();
+// Online features are explicitly disabled until a real Supabase project is configured.
+// Set your project URL and publishable/anon key here after deploying the HTML to HTTPS.
+const ONLINE_CONFIG={url:'https://vynykkoducsfjxoydjdu.supabase.co',anonKey:'sb_publishable_vR-FOCfDWiVfFWWVFMyulg_dQHxN5nQ'};
+let supabase=null,sessionUser=null;
+async function loadOnline(){if(!ONLINE_CONFIG.url||!ONLINE_CONFIG.anonKey)return null;if(!supabase){const mod=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');supabase=mod.createClient(ONLINE_CONFIG.url,ONLINE_CONFIG.anonKey);const {data}=await supabase.auth.getUser();sessionUser=data.user||null;refreshLoginLabel()}return supabase}
+function refreshLoginLabel(){document.getElementById('loginButton').textContent=sessionUser?'👤 '+(sessionUser.email?.split('@')[0]||'내 계정'):'👤 로그인'}
+function authMessage(text){document.getElementById('authMessage').textContent=text}
+document.getElementById('loginButton').onclick=()=>{document.getElementById('authOverlay').style.display='flex';authMessage(ONLINE_CONFIG.url?'계정을 만들거나 로그인해 주세요.':'서버가 연결되어 있어요. 이메일로 회원가입하거나 로그인해 주세요.');};
+document.getElementById('authClose').onclick=()=>{document.getElementById('authOverlay').style.display='none'};
+for(const [id,method] of [['authSignup','signUp'],['authLogin','signInWithPassword']])document.getElementById(id).onclick=async()=>{try{const client=await loadOnline();if(!client){authMessage('서버 설정이 먼저 필요해요. 동봉된 설명 파일을 확인해 주세요.');return}const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;const {data,error}=await client.auth[method]({email,password});if(error)throw error;sessionUser=data.user||null;refreshLoginLabel();authMessage(method==='signUp'?(data.session?'회원가입 및 로그인 완료!':'회원가입 요청 완료! 이메일로 전송된 인증 링크를 확인해 주세요.'):'로그인 완료!');}catch(e){authMessage(e.message)}};
+document.getElementById('authLogout').onclick=async()=>{try{const client=await loadOnline();if(client)await client.auth.signOut();sessionUser=null;refreshLoginLabel();authMessage('로그아웃했어요.')}catch(e){authMessage(e.message)}};
+document.getElementById('myGalleryTab').onclick=()=>{galleryScope='mine';document.getElementById('myGalleryTab').classList.add('selected');document.getElementById('publicGalleryTab').classList.remove('selected');viewingId=null;refreshGallery()};
+document.getElementById('publicGalleryTab').onclick=async()=>{galleryScope='public';document.getElementById('publicGalleryTab').classList.add('selected');document.getElementById('myGalleryTab').classList.remove('selected');viewingId=null;refreshGallery();try{const client=await loadOnline();if(!client){document.getElementById('galleryWorkInfo').textContent='온라인 서버 연결 후 다른 사람들의 작품을 볼 수 있어요.';return}const {data,error}=await client.from('artworks').select('id,title,parts,thumbnail,created,author_name').order('created',{ascending:false}).limit(50);if(error)throw error;publicRecords=data||[];refreshGallery()}catch(e){document.getElementById('galleryWorkInfo').textContent='공유 전시를 불러오지 못했어요: '+e.message}};
+document.getElementById('galleryPublish').onclick=async()=>{const item=galleryRecords.find(r=>r.id===viewingId);if(!item)return;try{const client=await loadOnline();if(!client){alert('공개하려면 먼저 Supabase 서버를 연결해야 해요.');return}const {data:{user}}=await client.auth.getUser();if(!user){alert('작품 공개는 로그인 후 할 수 있어요.');return}const payload={id:crypto.randomUUID(),owner_id:user.id,author_name:user.email?.split('@')[0]||'익명 작가',title:item.title,parts:item.parts,thumbnail:(item.thumbnail&&item.thumbnail.length<180000?item.thumbnail:null),created:new Date().toISOString()};const {error}=await client.from('artworks').insert(payload);if(error)throw error;alert('작품이 모두의 전시실에 공개됐어요!');document.getElementById('publicGalleryTab').click()}catch(e){alert('작품 공개 실패: '+e.message)}};
+
+
+window.addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+function animate(){requestAnimationFrame(animate);renderer.render(scene,cam)}animate();
+</script></body></html>
